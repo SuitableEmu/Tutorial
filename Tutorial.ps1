@@ -155,7 +155,7 @@ param(
 
 Write-Host "Please input some information before the script can run"
 
-# Adobe #
+# Example #
 
 Do {
  $Question = Read-Host "Do you want to Install Example? Y/N"
