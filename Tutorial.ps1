@@ -10,17 +10,30 @@
 
 #-------------------------------------------------------------------------------------------------#
 
+
 $dir ="C:\temp" 
+
+# Creates C:\temp if it does not exist #
 if (!(Test-Path $dir)) {New-Item -Path $dir -ItemType container}
+
+
+# Use to direct to Null can also use Out-Null #
 $ok = $answer -ne $NULL
+
+# Use to check if 64 bit operating system #
 $Se = [System.Environment]::Is64BitOperatingSystem
+
+# Is not used in this script but can be usefull if you want to build on this script #
 $wsh = New-Object -ComObject Wscript.Shell
  
 #-------------------------------------------------------------------------------------------------#
 
 # Deployments #
 
+# URL to FTP works the best, and is recommended #
 $url = "ftp://ftp.adobe.com/pub/adobe/reader/win/AcrobatDC/2001220048/AcroRdrDC2001220048_en_US.exe" 
+
+# This is where the MSI or EXE file location goes, can copy paste to $outpath1, 2, 3 etc.. #
 $outpath = "$dir\Adobe_Reader.exe"
 
 
@@ -28,6 +41,8 @@ $outpath = "$dir\Adobe_Reader.exe"
 
 #---------------------------------------------------------------------------------------------------#
 
+
+# Processing message just input "P-P x" Where you want this to show up #
 
 function P-P($seconds) {
     $doneDT = (Get-Date).AddSeconds($seconds)
@@ -41,28 +56,7 @@ function P-P($seconds) {
 }
 
 
-Function Bloat-B-Gone {
-
-Get-AppxPackage -name "Microsoft.ZuneMusic" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.Music.Preview" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.XboxIdentityProvider" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.BingTravel" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.BingHealthAndFitness" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.BingFoodAndDrink" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.People" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.BingFinance" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.3DBuilder" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.BingNews" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.XboxApp" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.BingSports" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.Getstarted" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.Office.OneNote" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.WindowsMaps" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.MicrosoftSolitaireCollection" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.MicrosoftOfficeHub" | Remove-AppxPackage
-Get-AppxPackage -name "Microsoft.BingWeather" | Remove-AppxPackage
-}
-
+# This is what shows the "Press any key to shutdown computer message at the end of the script #
 
 Function Pause ($Message = "Press any key to shutdown computer...") {
    # Check if running in PowerShell ISE
@@ -110,45 +104,18 @@ Function Pause ($Message = "Press any key to shutdown computer...") {
 }
 
 
-function Set-WindowStyle {
-param(
-    [Parameter()]
-    [ValidateSet('FORCEMINIMIZE', 'HIDE', 'MAXIMIZE', 'MINIMIZE', 'RESTORE', 
-                 'SHOW', 'SHOWDEFAULT', 'SHOWMAXIMIZED', 'SHOWMINIMIZED', 
-                 'SHOWMINNOACTIVE', 'SHOWNA', 'SHOWNOACTIVATE', 'SHOWNORMAL')]
-    $Style = 'SHOW',
-    [Parameter()]
-    $MainWindowHandle = (Get-Process -Id $pid).MainWindowHandle
-)
-    $WindowStates = @{
-        FORCEMINIMIZE   = 11; HIDE            = 0
-        MAXIMIZE        = 3;  MINIMIZE        = 6
-        RESTORE         = 9;  SHOW            = 5
-        SHOWDEFAULT     = 10; SHOWMAXIMIZED   = 3
-        SHOWMINIMIZED   = 2;  SHOWMINNOACTIVE = 7
-        SHOWNA          = 8;  SHOWNOACTIVATE  = 4
-        SHOWNORMAL      = 1
-    }
-    Write-Verbose ("Set Window Style {1} on handle {0}" -f $MainWindowHandle, $($WindowStates[$style]))
-
-    $Win32ShowWindowAsync = Add-Type –memberDefinition @” 
-    [DllImport("user32.dll")] 
-    public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-“@ -name “Win32ShowWindowAsync” -namespace Win32Functions –passThru
-
-    $Win32ShowWindowAsync::ShowWindowAsync($MainWindowHandle, $WindowStates[$Style]) | Out-Null
-}
-
 # --------------------------------------------------------------------------------------------------#
 
 
 ######################################################################################################## --- Input Section --- ##################################################################################################
 
-
+# Intro can trype what you want here #
 
 Write-Host "Please input some information before the script can run"
 
 # Example #
+
+# This creates $Adobe and gives it a value in this case "Y" or "N" #
 
 Do {
  $Adobe = Read-Host "Do you want to Install Adobe Reader  Y/N"
@@ -164,10 +131,12 @@ else {
 }while (( $Adobe -gt "Y" ) -or ( $Adobe -lt "N" )) 
 
 
-
+# Clear just clears the text it has already outputted #
 Clear
 Write-Host "Thank you, Script will now run"
 Clear
+
+# Here you see an example of "P-P x" function
 P-P 3
 Write-Host "Running.."
 
@@ -175,7 +144,11 @@ Write-Host "Running.."
 ################################################################################################################################### --- Script Starts Under here --- ###################################################################################
 
 
+# This is the actual script, where it gets the value from $Adobe "Y" or "N"
+# "Y" = Yes and "N" = No #
 
+# So If $Adobe equals Yes check to see if exe is downloded (It will check C:\Temp to see if exe is there.)
+# if it is run it
 do {
 
 if($Adobe -eq "Y") {
@@ -188,12 +161,12 @@ if($Adobe -eq "Y") {
         Start-Process -Filepath "$outpath" -ArgumentList /Quiet -Wait
         break
         } 
-       
+     # else download it and run it  
 else { 
     try { 
         Invoke-WebRequest -Uri $url -OutFile $outpath -ErrorAction SilentlyContinue
 } 
-        
+  # Catch is for if it fails, it will give you and error message      
  catch { 
     [System.Windows.MessageBox]::Show("An unexpected error occurred. Contact your System Administrator.","Error SEA0001")
         Throw $_.Exception.Message
@@ -204,7 +177,7 @@ else {
 
 
 }
-
+  # elseif $Adobe = No Skip it
 elseif($Adobe -eq "N") {
         Write-Host "Skipping Adobe Reader"
         P-P 3
@@ -218,5 +191,6 @@ Break
 
 P-P 3
 Write-Host "Script has Finished Running."
+# Example of "Pause" function
 Pause
 #Stop-Computer -ComputerName localhost
