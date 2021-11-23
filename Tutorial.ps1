@@ -1,5 +1,6 @@
-﻿#Add Navision to Install#
-#Can be own script but add logon#
+#Made by https://github.com/SuitableEmu
+ 
+ #Basic Install script
 
 # Other Do Not Touch #
 
