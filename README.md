@@ -1,5 +1,5 @@
 # Tutorial
-Basic Installation Script for business
+Basic Software Installation Script
 
 
  #Basic Install script
