@@ -1,6 +1,10 @@
 #Made by https://github.com/SuitableEmu
  
  #Basic Install script
+ 
+ # You will need a MSI file for the silent installation, this example uses a EXE
+ # To get a MSI file download 7-Zip and extract it from the exe.
+ # and change $outpath to a where the MSI file is
 
 # Other Do Not Touch #
 
@@ -11,13 +15,14 @@ if (!(Test-Path $dir)) {New-Item -Path $dir -ItemType container}
 $ok = $answer -ne $NULL
 $Se = [System.Environment]::Is64BitOperatingSystem
 $wsh = New-Object -ComObject Wscript.Shell
-
+$url = "ftp://ftp.adobe.com/pub/adobe/reader/win/AcrobatDC/2001220048/AcroRdrDC2001220048_en_US.exe" 
+ 
 #-------------------------------------------------------------------------------------------------#
 
 # Deployments #
 
-$Example1 = 'Write-Host "It is installing"'
 
+$outpath = "$dir\Adobe_Reader.exe"
 
 
 # Functions Do Not Touch #
@@ -147,8 +152,8 @@ Write-Host "Please input some information before the script can run"
 # Example #
 
 Do {
- $Question = Read-Host "Do you want to Install Example? Y/N"
-if(($Question -ne "Y") -and ($Question -ne "N")){   
+ $Adobe = Read-Host "Do you want to Install Adobe Reader  Y/N"
+if(($Adobe -ne "Y") -and ($Adobe -ne "N")){   
    Write-Host "Please Input AR or AP"
 
 }
@@ -157,7 +162,7 @@ else {
 
 }
 
-}while (( $Question -gt "Y" ) -or ( $Question -lt "N" )) 
+}while (( $Adobe -gt "Y" ) -or ( $Adobe -lt "N" )) 
 
 
 
@@ -174,20 +179,43 @@ Write-Host "Running.."
 
 do {
 
-if($Question -eq "Y") {
-        Write-Host "Installing Example"
+if($Adobe -eq "Y") {
+        Write-Host "Installing Adobe Reader"
         P-P 3
-        Write-Host 'Start-Process "$Example1"'
-        Break
+        Write-Host "Checking to see if Temp exists.."
+        P-P 3
+  if(Test-path $outpath) {
+    Write-Host "Downloading from the server.."
+        Start-Process -Filepath "$outpath" -ArgumentList /Quiet -Wait
+        break
+        } 
+       
+else { 
+    try { 
+        Invoke-WebRequest -Uri $url -OutFile $outpath -ErrorAction SilentlyContinue
+} 
+        
+ catch { 
+    [System.Windows.MessageBox]::Show("An unexpected error occurred. Contact your System Administrator.","Error SEA0001")
+        Throw $_.Exception.Message
+}
+     Start-Process -Filepath "$outpath" -ArgumentList /Quiet
+     Break
+     }
+
+
 }
 
-else {
-        Write-Host "Skipping Example1"
+elseif($Adobe -eq "N") {
+        Write-Host "Skipping Adobe Reader"
         P-P 3
         Break
 }
+Else {
+Break
+}
+
 }until($ok)
-
 
 P-P 3
 Write-Host "Script has Finished Running."
