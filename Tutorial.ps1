@@ -15,13 +15,12 @@ if (!(Test-Path $dir)) {New-Item -Path $dir -ItemType container}
 $ok = $answer -ne $NULL
 $Se = [System.Environment]::Is64BitOperatingSystem
 $wsh = New-Object -ComObject Wscript.Shell
-$url = "ftp://ftp.adobe.com/pub/adobe/reader/win/AcrobatDC/2001220048/AcroRdrDC2001220048_en_US.exe" 
  
 #-------------------------------------------------------------------------------------------------#
 
 # Deployments #
 
-
+$url = "ftp://ftp.adobe.com/pub/adobe/reader/win/AcrobatDC/2001220048/AcroRdrDC2001220048_en_US.exe" 
 $outpath = "$dir\Adobe_Reader.exe"
 
 
