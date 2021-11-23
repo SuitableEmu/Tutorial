@@ -24,17 +24,6 @@ $Example1 = 'Write-Host "It is installing"'
 
 #---------------------------------------------------------------------------------------------------#
 
-function Start-Sleep($seconds) {
-    $doneDT = (Get-Date).AddSeconds($seconds)
-    while($doneDT -gt (Get-Date)) {
-        $secondsLeft = $doneDT.Subtract((Get-Date)).TotalSeconds
-        $percent = ($seconds - $secondsLeft) / $seconds * 100
-        Write-Progress -Activity "Sleeping" -Status "Sleeping..." -SecondsRemaining $secondsLeft -PercentComplete $percent
-        [System.Threading.Thread]::Sleep(10)
-    }
-   Write-Progress -Activity "Sleeping" -Status "Sleeping..." -SecondsRemaining 0 -Completed
-}
-
 
 function P-P($seconds) {
     $doneDT = (Get-Date).AddSeconds($seconds)
@@ -172,8 +161,10 @@ else {
 
 
 
-
+Clear
 Write-Host "Thank you, Script will now run"
+Clear
+P-P 3
 Write-Host "Running.."
 
 
@@ -185,18 +176,20 @@ do {
 
 if($Question -eq "Y") {
         Write-Host "Installing Example"
-        Write-Host "Installed"
+        P-P 3
+        Write-Host 'Start-Process "$Example1"'
         Break
 }
 
 else {
         Write-Host "Skipping Example1"
+        P-P 3
         Break
 }
 }until($ok)
 
 
-
+P-P 3
 Write-Host "Script has Finished Running."
 Pause
 #Stop-Computer -ComputerName localhost
