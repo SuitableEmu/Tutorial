@@ -109,7 +109,7 @@ Function Pause ($Message = "Press any key to shutdown computer...") {
 
 ######################################################################################################## --- Input Section --- ##################################################################################################
 
-# Intro can trype what you want here #
+# Intro can type what you want here #
 
 Write-Host "Please input some information before the script can run"
 
@@ -120,7 +120,7 @@ Write-Host "Please input some information before the script can run"
 Do {
  $Adobe = Read-Host "Do you want to Install Adobe Reader  Y/N"
 if(($Adobe -ne "Y") -and ($Adobe -ne "N")){   
-   Write-Host "Please Input AR or AP"
+   Write-Host "Please Input Y or N"
 
 }
 
@@ -144,11 +144,11 @@ Write-Host "Running.."
 ################################################################################################################################### --- Script Starts Under here --- ###################################################################################
 
 
-# This is the actual script, where it gets the value from $Adobe "Y" or "N"
+# This is the actual script, it gets the value from $Adobe "Y" or "N"
 # "Y" = Yes and "N" = No #
 
-# So If $Adobe equals Yes check to see if exe is downloded (It will check C:\Temp to see if exe is there.)
-# if it is run it
+# So If $Adobe equals Yes check to see if exe is downloded (It will check C:\Temp to see if the exe is there.)
+# if it is, run it.
 do {
 
 if($Adobe -eq "Y") {
@@ -177,7 +177,7 @@ else {
 
 
 }
-  # elseif $Adobe = No Skip it
+  # elseif $Adobe = No, Skip it
 elseif($Adobe -eq "N") {
         Write-Host "Skipping Adobe Reader"
         P-P 3
@@ -193,4 +193,5 @@ P-P 3
 Write-Host "Script has Finished Running."
 # Example of "Pause" function
 Pause
+# This command shuts the computer off, it is commented out but you can remove the "#" to bring it back
 #Stop-Computer -ComputerName localhost
