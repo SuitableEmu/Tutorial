@@ -61,7 +61,7 @@ function P-P($seconds) {
 Function Pause ($Message = "Press any key to shutdown computer...") {
    # Check if running in PowerShell ISE
    If ($psISE) {
-      # "ReadKey" not supported in PowerShell ISE.
+      # "Pause" not supported in PowerShell ISE.
       # Show MessageBox UI
       $Shell = New-Object -ComObject "WScript.Shell"
       $Button = $Shell.Popup("Click OK to continue.", 0, "Hello", 0)
